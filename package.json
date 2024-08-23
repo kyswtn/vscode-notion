@@ -1,0 +1,214 @@
+{
+  "name": "vscode-notion",
+  "displayName": "VSCode Notion",
+  "icon": "resources/vscode-notion.png",
+  "version": "1.1.0",
+  "description": "Browse Notion pages directly in Visual Studio Code.",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "notion",
+    "notion.so"
+  ],
+  "homepage": "https://github.com/kyswtn/vscode-notion#readme",
+  "bugs": {
+    "url": "https://github.com/kyswtn/vscode-notion/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kyswtn/vscode-notion"
+  },
+  "license": "MIT",
+  "publisher": "frenco",
+  "main": "./dist/extension.js",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "NODE_ENV=production webpack --mode production --config webpack.config.ts",
+    "watch": "NODE_ENV=development webpack --watch --mode development --config webpack.config.ts",
+    "package-extension": "vsce package --no-dependencies",
+    "publish-extension": "vsce publish --no-dependencies"
+  },
+  "contributes": {
+    "configuration": {
+      "title": "VSCode Notion",
+      "properties": {
+        "notion.fontFamily": {
+          "type": "string",
+          "description": "Controls the font family used in Notion pages.",
+          "default": "ui-sans-serif, system-ui, apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol'"
+        },
+        "notion.fontSize": {
+          "type": "number",
+          "description": "Controls the font size in pixels used in Notion pages.",
+          "default": 14
+        },
+        "notion.allowedEmbeds": {
+          "type": "boolean",
+          "description": "Controls whether to allow embeds or not in Notion pages.",
+          "default": true
+        }
+      }
+    },
+    "commands": [
+      {
+        "category": "Notion",
+        "command": "notion.openPage",
+        "title": "Open Page",
+        "icon": "$(add)"
+      },
+      {
+        "category": "Notion",
+        "command": "notion.refreshPage",
+        "title": "Refresh Page",
+        "icon": "$(extensions-refresh)"
+      },
+      {
+        "category": "Notion",
+        "command": "notion.recents.refresh",
+        "title": "Refresh Recents",
+        "icon": "$(extensions-refresh)"
+      },
+      {
+        "category": "Notion",
+        "command": "notion.recents.clear",
+        "title": "Clear Recents",
+        "icon": "$(clear-all)"
+      },
+      {
+        "category": "Notion",
+        "command": "notion.recents.remove",
+        "title": "Remove Item",
+        "icon": "$(close)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "notion-sidebar",
+          "title": "VSCode Notion",
+          "icon": "$(custom-icons-notion)"
+        }
+      ]
+    },
+    "views": {
+      "notion-sidebar": [
+        {
+          "type": "tree",
+          "id": "notion-recents",
+          "name": "Recents",
+          "contextualTitle": "Notion Recents",
+          "visibility": "visible"
+        }
+      ]
+    },
+    "icons": {
+      "custom-icons-notion": {
+        "description": "notion",
+        "default": {
+          "fontPath": "resources/fonts/custom-icons.woff",
+          "fontCharacter": "\\f101"
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "notion.refreshPage",
+          "when": "false"
+        },
+        {
+          "command": "notion.recents.refresh",
+          "when": "false"
+        },
+        {
+          "command": "notion.recents.clear",
+          "when": "false"
+        },
+        {
+          "command": "notion.recents.remove",
+          "when": "false"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "notion.openPage",
+          "when": "notion:isReady && view == notion-recents",
+          "group": "navigation@1"
+        },
+        {
+          "command": "notion.recents.refresh",
+          "when": "notion:isReady && view == notion-recents",
+          "group": "navigation@2"
+        },
+        {
+          "command": "notion.recents.clear",
+          "when": "notion:isReady && view == notion-recents",
+          "group": "navigation@3"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "notion.refreshPage",
+          "when": "activeWebviewPanelId == notion.pageView",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "notion.recents.remove",
+          "when": "view == notion-recents",
+          "group": "inline@1"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "notion-recents",
+        "contents": "Loading...",
+        "when": "!notion:isReady"
+      },
+      {
+        "view": "notion-recents",
+        "contents": "You have not opened any pages recently.\n[Open one](command:notion.openPage)",
+        "when": "notion:isReady"
+      }
+    ]
+  },
+  "activationEvents": [
+    "onStartupFinished",
+    "onWebviewPanel:notion.pageView"
+  ],
+  "dependencies": {
+    "nanoid": "3",
+    "notion-client": "^6.16.0",
+    "notion-utils": "^6.16.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-notion-x": "^6.16.0",
+    "reflect-metadata": "^0.2.1",
+    "vedk": "^0.1.2"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.7",
+    "@swc/core": "^1.4.8",
+    "@swc/register": "^0.1.10",
+    "@vscode/vsce": "^3.0.0",
+    "dotenv-webpack": "^8.0.1",
+    "swc-loader": "^0.2.6",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4",
+    "@types/bun": "^e.0.10",
+    "@types/dotenv-webpack": "^7.0.7",
+    "@types/node": "^18.19.20",
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.0",
+    "@types/vscode": "^1.87.0",
+    "fantasticon": "^2.0.0",
+    "notion-types": "^6.16.0",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "vscode": "^1.91.0"
+  }
+}

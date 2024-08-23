@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2022",
+    "outDir": "dist/webview",
+    "lib": [
+      "es2022",
+      "dom"
+    ],
+    "jsx": "react",
+    "sourceMap": true,
+    "rootDir": "..",
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "./index.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
