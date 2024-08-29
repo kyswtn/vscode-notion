@@ -18,8 +18,8 @@ export class OpenPageCommand implements vscode.Disposable {
     this.disposable.dispose()
   }
 
-  private async run(args: OpenPageCommandArgs) {
-    let pageId = args.id
+  private async run(args?: OpenPageCommandArgs) {
+    let pageId = args?.id
     if (!pageId) {
       const urlOrId = await vscode.window.showInputBox({
         prompt: 'Enter a full URL or just ID of the page.',
