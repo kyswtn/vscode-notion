@@ -2,7 +2,7 @@
   "name": "vscode-notion",
   "displayName": "VSCode Notion",
   "icon": "resources/vscode-notion.png",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Browse Notion pages directly in Visual Studio Code.",
   "categories": [
     "Other"
